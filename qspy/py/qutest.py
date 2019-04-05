@@ -72,7 +72,7 @@ class qutest:
     _SKIP = 3
 
     # timeout value [seconds]
-    _TOUT = 1.000
+    _TOUT = 3.000
 
     # test command options
     _OPT_NORESET = 0x01
