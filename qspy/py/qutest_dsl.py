@@ -88,6 +88,41 @@ def skip(nTests = 9999):
 #
 def expect(match):
 
+## @brief defines an expectation for the current test within a certain number of QSPY messages
+#
+# @description
+# This command defines a new expecation for the textual output produced by QSPY.
+# A number of messages up to the given margin will be ignored while expecting the given match.
+
+# @param[in] margin  the number of messages that may be ignored while
+#           waiting for the match. An indefinite number of non-matching
+#           messages will be ignored if a negative margin is given.
+#
+# @param[in] match  the expected match for the QSPY output
+#           The @p match string can contain special characters, such as:
+#           `*`, `?` and `[chars]`, which are matched according to the
+#           Python command
+#           [fnmatch.fnmatchcase()](https://docs.python.org/2/library/fnmatch.html)
+# @note
+# The @p match string can be the
+# [printf-style %-subsitution string](https://docs.python.org/2/library/stdtypes.html#string-formatting-operations)
+# (compatible with Python 2 and Python 3), or the new
+# ["f-string"](https://realpython.com/python-f-strings/)
+# (compatible only with Python 3).
+#
+# @note
+# The special string "@timestamp" (or "%timestamp") at the beginning
+# of the @p match parameter will be automatically replaced with the current
+# numerical value of the test sequence-counter.
+#
+# @usage
+# `expect_within(1, "0000000001 USER+000 FindFunction_WhichIsBroken 0 78")`@n
+# `expect_within(5, "@timestamp Trg-Done QS_RX_COMMAND")`@n
+# `expect_within(1000, "           Tick<0>  Ctr=*")`@n
+# `expect_within(-1, "@timestamp IO_CALL IO_Write %d %d" %(CommandReg, ProgramCmd))`
+#
+def expect_within(margin, match):
+
 ## @brief Set the Global-Filter in the Target
 #
 # @description

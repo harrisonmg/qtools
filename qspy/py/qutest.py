@@ -95,6 +95,7 @@ class qutest:
             'test': self.test,
             'skip': self.skip,
             'expect': self.expect,
+            'expect_within': self.expect_within,
             'glb_filter': self.glb_filter,
             'loc_filter': self.loc_filter,
             'current_obj': self.current_obj,
@@ -216,6 +217,58 @@ class qutest:
                 self._fail('expected: "%s"' %expected,
                            'received: "%s"' %received)
                 return False
+        elif self._state == qutest._FAIL or self._state == qutest._SKIP:
+            pass # ignore
+        else:
+            assert 0, 'invalid state in expect: ' + match
+
+    # expect_within DSL command .....................................................
+    def expect_within(self, margin, match):
+        if self._to_skip > 0:
+            pass # ignore
+        elif self._state == qutest._INIT:
+            self._before_test('expect')
+        elif self._state == qutest._TEST:
+
+            # initial timestamp replacement
+            if match.startswith('@timestamp') or match.startswith('%timestamp'):
+                self._timestamp += 1
+                expected = '%010d' %self._timestamp + match[10:]
+            elif match[0:9].isdigit():
+                self._timestamp += 1
+                expected = match
+            else:
+                expected = match
+
+            old_margin = margin
+            while margin != 0:
+                if not qspy._receive(): # timeout?
+                    self._fail('expected: "%s"' %match,
+                               'received: "" (timeout after %d messages)' %(old_margin - margin))
+                    return False
+
+                received = qutest._last_record[3:].decode('utf-8')
+
+                if fnmatchcase(received, expected):
+                    return True
+                else:
+                    # increment timestamp if received was stamped
+                    if received[0:9].isdigit():
+                        self._timestamp += 1
+
+                        # change expected if necessary
+                        if match.startswith('@timestamp') or match.startswith('%timestamp'):
+                            expected = '%010d' %self._timestamp + match[10:]
+                        elif match[0:9].isdigit():
+                            expected = match
+
+                    # decrement margin if not indef (margin < 0)
+                    if margin > 0: margin -= 1
+
+            self._fail('did not receive: "%s"' %match,
+                       'within a margin of %d messages' %old_margin)
+            return False
+
         elif self._state == qutest._FAIL or self._state == qutest._SKIP:
             pass # ignore
         else:
