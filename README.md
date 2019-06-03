@@ -1,10 +1,11 @@
+
+![QTools Collection](https://www.state-machine.com/img/qtools_banner.jpg)
+
 # In This Fork
 This fork contains three main additions to QTools:
 * A stack trace feature in QUTest that, upon test failure, displays a list of line numbers representing the function calls leading to the failed test.
 * An `expect_within(margin, match)` test in QUTest that can ignore a given number of QSpy messages while searching for a particular match.
 * Compiled POSIX binaries for qspy, qclean, and qfsgen.
-
-![QTools Collection](https://www.state-machine.com/img/qtools_banner.jpg)
 
 # What's New?
 View QTools Revision History at: 
