@@ -1,3 +1,8 @@
+# In This Fork
+This fork contains two main additions to QTools:
+* A stack trace feature in QUTest that, upon test failure, displays a list of line numbers representing the function calls leading to the failed test.
+* Compiled POSIX binaries for qspy, qclean, and qfsgen.
+
 ![QTools Collection](https://www.state-machine.com/img/qtools_banner.jpg)
 
 # What's New?
