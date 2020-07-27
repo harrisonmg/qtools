@@ -7,6 +7,9 @@ This fork contains three main additions to QTools:
 * An `expect_within(margin, match)` test in QUTest that can ignore a given number of QSpy messages while searching for a particular match.
 * Compiled POSIX binaries for qspy, qclean, and qfsgen.
 
+# Attention
+This fork is currently quite behind in updates. The original QUTest failure line number feature was added through [this pull request](https://github.com/QuantumLeaps/qtools/pull/9) for QTools version 6.5.0, while the expanded feature that displayed an entire traceback was denied in [this pull request](https://github.com/QuantumLeaps/qtools/pull/10). I keep this fork to preserve this and the rest of the features I've added, which I still find useful.
+
 ---------------------------------------------------------------------------
 # What's New?
 View QTools Revision History at: 
